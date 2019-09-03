@@ -1,15 +1,19 @@
 checklist = list()
-
 # [{'color': 'blue', 'completed': False}, {'color': 'red', 'completed': False}]
 
+rainbow = "violet indigo blue green yellow orange red"
 # CREATE
 def create(item):
     if item.split(' ', 1)[0].lower() in checklist:
+        print("This color has already been worn! Wear a different color")
         return True
-    else: 
+    elif item.split(' ', 1)[0].lower() in rainbow: 
         checklist.append({'color': item.split(' ', 1)[0].lower(), 
         'item': item, 'completed': True})
         return False
+    else:
+        print("This color doesn't belong in rainbow! Choose a different color!")
+        return True
 
 # READ
 def read(index):
@@ -75,6 +79,14 @@ def check_index(index):
     else:
         return False
 
+# Function to check if rainbow is complete
+def check_rainbow():
+    count = 0
+    for color in checklist:
+        if color['color'] in rainbow:
+            count += 1
+    if count == 7:
+        return True
 
 # # TEST
 # def test():
@@ -93,9 +105,10 @@ def check_index(index):
 # test()
 
 running = True
+rainbow_print = False
 while running:
     selection = user_input(
-        '''\nEnter
+        '''\nEnter:
 A to add to list
 R to read from list
 P to display list
@@ -103,3 +116,8 @@ D to delete
 Q to quit
 -> ''')
     running = select(selection.upper())
+    if check_rainbow() == True and rainbow_print == False: 
+        print("Rainbow completed! Good job!")
+        rainbow_print = True
+    elif check_rainbow() == False:
+        rainbow_print = False
