@@ -4,20 +4,30 @@ checklist = list()
 rainbow = "violet indigo blue green yellow orange red"
 # CREATE
 def create(item):
-    if item.split(' ', 1)[0].lower() in checklist:
+    if check_color(item.split(' ', 1)[0].lower()):
         print("This color has already been worn! Wear a different color")
         return True
     elif item.split(' ', 1)[0].lower() in rainbow: 
         checklist.append({'color': item.split(' ', 1)[0].lower(), 
         'item': item, 'completed': True})
         return False
+    elif item in 'q Q':
+        return False
     else:
         print("This color doesn't belong in rainbow! Choose a different color!")
         return True
 
+# Helper function to check if color exists:
+def check_color(color):
+    for items in checklist:
+        if color == items['color']:
+            return True
+    return False
+    
 # READ
 def read(index):
-    print(checklist[index]['item'])
+    print("Input " + str(index) +
+    " is " + checklist[index]['item'])
     
 
 # UPDATE
@@ -53,7 +63,7 @@ def select(function_code):
     status = True
     if function_code == "A":
         while status:
-            status = create(input("Add to list: "))
+            status = create(input("Add to list or Q to Quit: "))
     elif function_code == "R":
         user_input = int(input("Item to read: "))
         if check_index(user_input):
@@ -74,7 +84,7 @@ def select(function_code):
 
 # Helper function to check index
 def check_index(index):
-    if checklist[index]:
+    if index < len(checklist):
         return True
     else:
         return False
@@ -87,6 +97,8 @@ def check_rainbow():
             count += 1
     if count == 7:
         return True
+    else: 
+        return False
 
 # # TEST
 # def test():
@@ -109,7 +121,7 @@ rainbow_print = False
 while running:
     selection = user_input(
         '''\nEnter:
-A to add to list
+A to add to list 
 R to read from list
 P to display list
 D to delete 
