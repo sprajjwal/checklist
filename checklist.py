@@ -13,8 +13,8 @@ def create(item):
 
 # READ
 def read(index):
-    item = checklist[index]['item']
-    print(item)
+    print(checklist[index]['item'])
+    
 
 # UPDATE
 def update(index, item):
@@ -31,12 +31,14 @@ def list_all_items():
     for items in checklist:
         print(str(index) + " " + items['item'])
         index += 1
-    print('\n')
 
 # MARK COMPLETION
 def mark_completed(index):
     checklist[index]['completed'] = True
-    
+
+# UNCHECK COMPLETION
+def uncheck_completed(index):
+    checklist[index]['completed'] = False 
 
 # USER INPUT
 def user_input(prompt):
@@ -44,12 +46,16 @@ def user_input(prompt):
 
 # SELECT
 def select(function_code):
+    status = True
     if function_code == "A":
-        status = True
         while status:
             status = create(input("Add to list: "))
     elif function_code == "R":
-        read(input("Item to read: "))
+        user_input = int(input("Item to read: "))
+        if check_index(user_input):
+            read(user_input)
+        else: 
+            print("Invalid index!")
     elif function_code == "P":
         list_all_items()
     elif function_code == "Q":
@@ -61,6 +67,13 @@ def select(function_code):
         # Error catching
         print("Unknown option")
     return True
+
+# Helper function to check index
+def check_index(index):
+    if checklist[index]:
+        return True
+    else:
+        return False
 
 
 # # TEST
@@ -82,9 +95,11 @@ def select(function_code):
 running = True
 while running:
     selection = user_input(
-        '''\nPress A to add to list
+        '''\nEnter
+A to add to list
 R to read from list
 P to display list
 D to delete 
-Q to quit: ''')
+Q to quit
+-> ''')
     running = select(selection.upper())
